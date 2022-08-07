@@ -174,7 +174,7 @@ export default {
 
       let result = "";
       for (const num of removed.split(" ")) {
-        result += this.toWordFrom(num);
+        result += this.toWordFrom(num) + " ";
       }
       console.log("string", result);
 
@@ -182,30 +182,23 @@ export default {
     },
 
     async exchange(num) {
-      const params = new URLSearchParams();
-      params.append("from", this.countries[this.from].currency);
-      params.append("to", this.countries[this.to].currency);
-      params.append("amount", num);
-
       console.log(
-        "exchange: ",
+        "exchange:",
         this.countries[this.to].currency,
         this.countries[this.from].currency,
         num
       );
 
-      const res = await this.$axios.get(
-        "https://api.apilayer.com/fixer/convert",
-        {
-          params,
-          headers: {
-            apikey: "qosqNFnGCAkMBIPDOAyFjlxDXARbWVJE",
-          },
-        }
-      );
+      const res = await this.$axios.get("/api/exchange", {
+        params: {
+          from: this.countries[this.from].currency,
+          to: this.countries[this.to].currency,
+          amount: num.trim(),
+        },
+      });
 
       if (res.status == 200) {
-        return res.data.result;
+        return res.data;
       } else {
         return null;
       }
@@ -217,6 +210,7 @@ export default {
       // console.log("word to number: ", str, num);
       const result = await this.exchange(num);
       // console.log("result: ", result);
+      console.log("최종", result);
 
       this.outText = result;
     },
