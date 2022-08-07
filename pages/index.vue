@@ -13,7 +13,12 @@
       </select>
     </div>
     <div class="input-form">
-      <input type="text" :placeholder="from" v-model="inText" />
+      <input
+        @keypress.enter="run"
+        type="text"
+        :placeholder="from"
+        v-model="inText"
+      />
       <input type="text" :placeholder="to" v-model="outText" />
       <button @click="run">RUN</button>
     </div>
